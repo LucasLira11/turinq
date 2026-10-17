@@ -80,7 +80,8 @@ export default function Terrain({ frame, segments, opacity = 1, scan }: Props) {
   );
 
   useFrame(() => {
-    const o = frame ? (frame.current?.terrainOpacity ?? 0) : opacity;
+    const f = frame?.current;
+    const o = f ? f.terrainOpacity * (1 - f.panelMorph) : opacity;
     const m = material.current;
     if (m) {
       m.uniforms.uOpacity.value = o;

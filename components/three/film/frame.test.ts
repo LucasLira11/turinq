@@ -35,6 +35,13 @@ test("marcos dos atos", () => {
   expect(filmFrameAt(1, 1)).toMatchObject({ foldBack: 1, sphereOpacity: 1 });
 });
 
+test("no fechamento a esfera se remonta enquanto os painéis se dobram", () => {
+  expect(filmFrameAt(0.82, 1).assemble).toBe(0);
+  expect(filmFrameAt(0.89, 1).assemble).toBeGreaterThan(0);
+  expect(filmFrameAt(0.89, 1).assemble).toBeLessThan(1);
+  expect(filmFrameAt(1, 1).assemble).toBe(1);
+});
+
 test("intro só no topo e sem reduced motion", () => {
   expect(shouldPlayIntro(0, false)).toBe(true);
   expect(shouldPlayIntro(0.5, false)).toBe(false);

@@ -127,11 +127,11 @@ export default function Home() {
           </div>
         </ActSection>
 
-        <ActSection act={act.fechamento} tone="light" align="center">
+        <ActSection act={act.fechamento} tone="light">
           <Reveal as="h2" className={h2}>
             Vamos mapear o seu próximo projeto.
           </Reveal>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <div className="mt-10 flex flex-wrap gap-3">
             {contactChannels(site).map((c) => (
               <Button key={c.kind} href={c.href} external={c.kind === "whatsapp"} variant={c.kind === "whatsapp" ? "solid" : "ghost"}>
                 {c.kind === "whatsapp" ? "Conversar no WhatsApp" : c.label}

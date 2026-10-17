@@ -7,11 +7,12 @@ import { film, type LayerId } from "@/components/three/film/film-store";
 import type { FilmFrame } from "@/components/three/film/frame";
 import { TOKENS } from "@/lib/color";
 import { mulberry32 } from "@/lib/math";
+import { LAYER_GAP } from "./panels";
 import { heightAt, riverSources, traceRiver } from "./terrain";
 import { terrainY } from "./TerrainMesh";
 
 export const LAYER_ORDER: LayerId[] = ["relevo", "hidrografia", "lotes", "pontos"];
-export const LAYER_GAP = 0.35;
+
 const RIVER = "#5FA8D3";
 
 function positions(values: number[]): THREE.BufferGeometry {
@@ -96,7 +97,8 @@ export default function GisLayers({ frame }: { frame: RefObject<FilmFrame> }) {
     const f = frame.current;
     if (!f) return;
     const { layers } = film.get();
-    const o = f.terrainOpacity;
+    // somem junto com a abertura dos painéis, que nascem delas
+    const o = f.terrainOpacity * (1 - f.panelMorph);
     LAYER_ORDER.forEach((id, i) => {
       const g = groups.current[i];
       if (!g) return;

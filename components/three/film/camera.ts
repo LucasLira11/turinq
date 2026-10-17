@@ -17,8 +17,9 @@ const KEYS: [number, V3][] = [
   [0.52, [0, 1.2, 1.8]],
   // sobe para ver as camadas GIS empilhadas
   [0.62, [0, 1.7, 2.3]],
-  [0.74, [0, 1.5, 6]],
-  [0.82, [0, 1.5, 6]],
+  // recua para ver o arco de painéis inteiro
+  [0.74, [0, 1.2, 7.5]],
+  [0.82, [0, 1.2, 7.5]],
   [0.94, [0, 0, 4.2]],
   [1, [0, 0, 4.2]],
 ];

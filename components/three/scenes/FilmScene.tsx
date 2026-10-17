@@ -10,6 +10,7 @@ import DotGlobe from "@/components/three/objects/DotGlobe";
 import Dust from "@/components/three/objects/Dust";
 import FacetSphere, { EXPLODE_DISTANCE } from "@/components/three/objects/FacetSphere";
 import GisLayers from "@/components/three/objects/GisLayers";
+import ScreenPanels from "@/components/three/objects/ScreenPanels";
 import TerrainMesh from "@/components/three/objects/TerrainMesh";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
 import { smoothstep } from "@/lib/math";
@@ -24,6 +25,7 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
   const stage = useRef<THREE.Group>(null);
   const spin = useRef<THREE.Group>(null);
   const tilt = useRef<THREE.Group>(null);
+  const panels = useRef<THREE.Group>(null);
   const hud = useRef({ lat: NaN, lon: NaN, alt: NaN });
 
   useEffect(() => {
@@ -65,7 +67,8 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
     const aspect = size.width / size.height;
     const mobile = aspect < 0.8;
     const halfWidth = HALF_FOV_TAN * BASE_DISTANCE * aspect;
-    const side = 1 - smoothstep(0.4, 0.47, progress);
+    // A esfera fica ao lado do texto na abertura e volta para lá no fechamento.
+    const side = Math.max(1 - smoothstep(0.4, 0.47, progress), f.foldBack);
     const offsetX = mobile ? 0 : Math.min(1.4, halfWidth * 0.5) * side;
     const offsetY = mobile ? 0.95 * side : 0;
     const fit = mobile ? 0.4 : Math.min(0.95, Math.max(0.5, halfWidth * 0.34));
@@ -83,6 +86,15 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
       spin.current.rotation.y += dt * 0.12 * (1 - smoothstep(0.38, 0.42, progress));
       spin.current.rotation.x += (pointer.y * 0.25 - spin.current.rotation.x) * 0.05;
       spin.current.rotation.z += (-pointer.x * 0.15 - spin.current.rotation.z) * 0.05;
+    }
+    // Painéis: à direita do texto no desktop; no celular, menores e acima do texto.
+    if (panels.current) {
+      const open = f.panelMorph * (1 - f.foldBack);
+      // meia-largura visível na distância da câmera do ato 4 (z = 7,5)
+      const panelsHalfWidth = HALF_FOV_TAN * 7.5 * aspect;
+      const panelsScale = mobile ? 0.55 : Math.min(0.9, Math.max(0.5, panelsHalfWidth * 0.2));
+      panels.current.position.set(mobile ? 0 : panelsHalfWidth * 0.42 * open, mobile ? 1.5 * open : 0, 0);
+      panels.current.scale.setScalar(1 - (1 - panelsScale) * open);
     }
     // O globo só inclina com o mouse antes do mergulho: no território o ponto (-22, -43) precisa
     // estar exatamente no topo, como o globeTransformAt calcula.
@@ -109,6 +121,9 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
       </group>
       <TerrainMesh frame={frame} segments={QUALITY_SETTINGS[quality].terrainSegments} />
       <GisLayers frame={frame} />
+      <group ref={panels}>
+        <ScreenPanels frame={frame} />
+      </group>
     </>
   );
 }

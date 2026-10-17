@@ -31,7 +31,8 @@ const band = (p: number, inA: number, inB: number, outA: number, outB: number) =
 export function filmFrameAt(p: number, introT: number): FilmFrame {
   const foldBack = smoothstep(0.84, 0.94, p);
   return {
-    assemble: clamp01(introT),
+    // Enquanto invisível (telas), a esfera se desmonta; no fechamento volta a se montar.
+    assemble: clamp01(introT) * (1 - smoothstep(0.76, 0.8, p) * (1 - foldBack)),
     // anos: a esfera se abre; fim de planeta: as facetas voltam sobre o globo
     explode: band(p, 0.04, 0.12, 0.3, 0.38),
     sphereOpacity: Math.max(1 - smoothstep(0.2, 0.28, p), foldBack),
