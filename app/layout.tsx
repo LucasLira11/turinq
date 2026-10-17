@@ -1,35 +1,51 @@
 import type { Metadata } from "next";
-import { Syne } from "next/font/google";
+import { JetBrains_Mono, Manrope, Unbounded } from "next/font/google";
+import Backdrop from "@/components/layout/Backdrop";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import PageTransition from "@/components/layout/PageTransition";
+import SmoothScroll from "@/components/layout/SmoothScroll";
+import ToneScript from "@/components/layout/ToneScript";
+import StageLoader from "@/components/three/StageLoader";
+import { routeFor } from "@/content/routes";
+import { siteUrl } from "@/content/site";
 import "./globals.css";
 
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-syne",
-  display: "swap",
-});
+const unbounded = Unbounded({ subsets: ["latin"], variable: "--font-unbounded", display: "swap" });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
+
+const home = routeFor("/")!;
 
 export const metadata: Metadata = {
-  title: "Turinq | Software de Alta Performance",
-  description:
-    "Produzimos sites, sistemas robustos e aplicativos de forma moderna, rápida e profissional. Mais de 20 anos de inovação.",
-  keywords: ["software", "desenvolvimento web", "aplicativos mobile", "sistemas", "turinq"],
-  openGraph: {
-    title: "Turinq | Software de Alta Performance",
-    description: "Mais de 20 anos transformando ideias em soluções digitais de excelência.",
-    type: "website",
-  },
+  metadataBase: new URL(siteUrl()),
+  title: { default: home.title, template: "%s · Turinq" },
+  description: home.description,
+  openGraph: { type: "website", locale: "pt_BR", siteName: "Turinq", title: home.title, description: home.description },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={syne.variable}>
-      <body className={`${syne.className} antialiased bg-[#080B12] text-white`}>
-        {children}
+    <html
+      lang="pt-BR"
+      data-tone="light"
+      suppressHydrationWarning
+      className={`${unbounded.variable} ${manrope.variable} ${jetbrains.variable}`}
+    >
+      <body className="font-sans text-ink tone-dark:text-white">
+        <ToneScript />
+        <a href="#conteudo" className="skip-link">
+          Pular para o conteúdo
+        </a>
+        <Backdrop />
+        <StageLoader />
+        <SmoothScroll />
+        <Header />
+        <main id="conteudo" className="relative z-10">
+          {children}
+        </main>
+        <Footer />
+        <PageTransition />
       </body>
     </html>
   );

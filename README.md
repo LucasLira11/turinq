@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Turinq — site institucional
 
-## Getting Started
+Site da Turinq (Tecnologia e Desenvolvimento): sites, sistemas, área sindical e geotecnologia.
+A home é um plano-sequência 3D guiado pelo scroll: a esfera do logo se monta, vira um globo
+noturno, mergulha no território com camadas GIS e termina nas telas de sites e sistemas.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router, páginas estáticas) · React 19 · TypeScript · Tailwind CSS 4
+- three.js + React Three Fiber para o 3D (um canvas único, mantido entre as rotas)
+- Lenis (scroll suave) e GSAP SplitText (revelação de texto), ambos carregados no tempo ocioso
+- Vitest para as funções puras (timeline do filme, câmera, geometria, conteúdo)
+
+## Comandos
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
+npm run check        # lint + tipos + testes + build (rode antes de cada commit)
+npm run trace:logo   # regera o wordmark/monograma em SVG a partir de public/logo-turinq.png
+npm run build:land   # regera public/data/land-points.json (continentes do globo, Natural Earth)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Para verificar sem mexer no sistema: `?motion=reduce` simula movimento reduzido e `?nowebgl`
+força a versão sem 3D.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Onde ficam as coisas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `content/` — textos e fatos da empresa (números, projetos, serviços, rotas). Campos `null` são
+  dados ainda não confirmados (`TODO(Lucas)` em `content/site.ts`) e os componentes simplesmente
+  não mostram o item.
+- `components/three/film/` — o roteiro do filme: atos (`timeline.ts`), estado de cada objeto por
+  progresso (`frame.ts`) e câmera/globo (`camera.ts`). Tudo função pura e testada.
+- `components/three/objects/` — esfera de facetas, globo de pontos, relevo, camadas GIS, painéis.
+- `components/three/scenes/` — a cena de cada rota (`content/routes.ts` diz qual).
+- `docs/superpowers/` — spec e plano de implementação do redesign.
 
-## Learn More
+## Deploy na Vercel
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Importe o repositório na Vercel; o Next é detectado sozinho, sem `vercel.json`. Opcional:
+defina `NEXT_PUBLIC_SITE_URL` com o domínio final (sem ele, sitemap e metadados usam o domínio
+de produção da Vercel).
