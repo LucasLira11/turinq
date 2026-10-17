@@ -59,6 +59,9 @@ export default function DotGlobe({ frame, stride }: Props) {
 
   const lines = useMemo(() => gridGeometry(15, 1), []);
 
+  useEffect(() => () => points?.dispose(), [points]);
+  useEffect(() => () => lines.dispose(), [lines]);
+
   useFrame(() => {
     const o = frame.current?.globeOpacity ?? 0;
     if (group.current) group.current.visible = o > 0.001;

@@ -14,6 +14,7 @@ import ScreenPanels from "@/components/three/objects/ScreenPanels";
 import TerrainMesh from "@/components/three/objects/TerrainMesh";
 import { HALF_FOV_TAN, heroPlacement } from "@/components/three/placement";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
+import { DIRECTOR_PRIORITY } from "@/components/three/scenes/priority";
 import { smoothstep } from "@/lib/math";
 import { prefersReducedMotion } from "@/lib/use-reduced-motion";
 
@@ -106,7 +107,7 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
       tilt.current.rotation.x += (pointer.y * 0.15 * k - tilt.current.rotation.x) * 0.05;
       tilt.current.rotation.z += (-pointer.x * 0.1 * k - tilt.current.rotation.z) * 0.05;
     }
-  });
+  }, DIRECTOR_PRIORITY);
 
   return (
     <>

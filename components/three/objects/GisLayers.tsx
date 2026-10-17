@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { film, type LayerId } from "@/components/three/film/film-store";
@@ -92,6 +92,13 @@ export default function GisLayers({ frame }: { frame: RefObject<FilmFrame> }) {
   const dotMaterial = useRef<THREE.PointsMaterial>(null);
 
   const geo = useMemo(() => ({ relief: reliefWire(), rivers: rivers(), parcels: parcels(), poi: pointsOfInterest() }), []);
+
+  useEffect(
+    () => () => {
+      [geo.relief, geo.rivers, geo.parcels, geo.poi.dots, geo.poi.pins].forEach((g) => g.dispose());
+    },
+    [geo],
+  );
 
   useFrame(({ clock }) => {
     const f = frame.current;

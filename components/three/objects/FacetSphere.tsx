@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { film } from "@/components/three/film/film-store";
@@ -45,6 +45,14 @@ export default function FacetSphere({ frame, seed = 3 }: Props) {
     lines.setAttribute("position", new THREE.BufferAttribute(new Float32Array(facets.length * 18), 3));
     return { mesh, lines };
   }, [facets]);
+
+  useEffect(
+    () => () => {
+      mesh.dispose();
+      lines.dispose();
+    },
+    [mesh, lines],
+  );
 
   const tmp = useMemo(() => new THREE.Vector3(), []);
 

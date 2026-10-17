@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { FilmFrame } from "@/components/three/film/frame";
@@ -36,6 +36,15 @@ export default function ScreenPanels({ frame, morph = 1 }: Props) {
   );
   const plane = useMemo(() => new THREE.PlaneGeometry(PANEL_W, PANEL_H), []);
   const edges = useMemo(() => new THREE.EdgesGeometry(plane), [plane]);
+
+  useEffect(
+    () => () => {
+      textures.forEach((t) => t.dispose());
+      plane.dispose();
+      edges.dispose();
+    },
+    [textures, plane, edges],
+  );
 
   useFrame(() => {
     const f = frame?.current;

@@ -10,6 +10,7 @@ import Dust from "@/components/three/objects/Dust";
 import { latLonToVec3, randomLatLon } from "@/components/three/objects/globe";
 import { heroPlacement } from "@/components/three/placement";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
+import { DIRECTOR_PRIORITY } from "@/components/three/scenes/priority";
 import { TOKENS } from "@/lib/color";
 import { lostPin } from "./lost-pin";
 
@@ -67,7 +68,7 @@ export default function GlobeScene({ quality }: { quality: "high" | "low" }) {
       ring.current.scale.setScalar(0.4 + t * 1.6);
       (ring.current.material as THREE.MeshBasicMaterial).opacity = 1 - t;
     }
-  });
+  }, DIRECTOR_PRIORITY);
 
   return (
     <>

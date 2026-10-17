@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { FilmFrame } from "@/components/three/film/frame";
@@ -78,6 +78,8 @@ export default function Terrain({ frame, segments, opacity = 1, scan }: Props) {
     }),
     [],
   );
+
+  useEffect(() => () => geometry.dispose(), [geometry]);
 
   useFrame(() => {
     const f = frame?.current;

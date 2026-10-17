@@ -33,7 +33,7 @@ export default function FilmProgress() {
                 type="button"
                 onClick={() => goTo(a.id)}
                 aria-current={current === a.id ? "step" : undefined}
-                className="font-mono text-[11px] tracking-[0.16em] uppercase opacity-55 transition-opacity hover:opacity-100 aria-[current=step]:opacity-100"
+                className="font-mono text-[11px] tracking-[0.16em] uppercase opacity-75 transition-opacity hover:opacity-100 aria-[current=step]:opacity-100"
               >
                 {a.label}
               </button>

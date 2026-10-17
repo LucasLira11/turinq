@@ -9,6 +9,7 @@ import Dust from "@/components/three/objects/Dust";
 import FacetSphere from "@/components/three/objects/FacetSphere";
 import { heroPlacement } from "@/components/three/placement";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
+import { DIRECTOR_PRIORITY } from "@/components/three/scenes/priority";
 import { prefersReducedMotion } from "@/lib/use-reduced-motion";
 
 const STILL: FilmFrame = {
@@ -48,7 +49,7 @@ export default function SphereScene({ quality, small = false }: { quality: "high
       spin.current.rotation.x += (pointer.y * 0.25 - spin.current.rotation.x) * 0.05;
       spin.current.rotation.z += (-pointer.x * 0.15 - spin.current.rotation.z) * 0.05;
     }
-  });
+  }, DIRECTOR_PRIORITY);
 
   return (
     <>

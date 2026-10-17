@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/ui/PageHero";
+import { metadataFor } from "@/content/metadata";
 import { routeFor } from "@/content/routes";
 import { contactChannels, site } from "@/content/site";
 
 const route = routeFor("/contato")!;
 
-export const metadata: Metadata = { title: route.title, description: route.description };
+export const metadata: Metadata = metadataFor("/contato");
 
 const DESCRIPTIONS = {
   whatsapp: "Resposta mais rápida. A mensagem já vai pronta, é só contar o seu projeto.",

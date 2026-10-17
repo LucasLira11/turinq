@@ -89,10 +89,25 @@ export function progressAt(scrollY: number, boxes: SectionBox[]): number {
 
 // Opacidade do texto de um ato pelo progresso local da sua seção: aparece entre 10–20% e some
 // no trecho de 10% que termina em `exit` (padrão 90%). `exit` é antecipado quando o texto é alto
-// e o sticky o soltaria antes. A abertura já começa visível; o fechamento não some.
+// e o sticky o soltaria antes. Em telas baixas (celular deitado, zoom) as duas janelas se
+// apertam e a entrada é antecipada para o texto sempre chegar a 100%; abaixo de 15% não há
+// esmaecimento algum. A abertura já começa visível; o fechamento não some.
 export function textOpacity(id: ActId, local: number, exit = 0.9): number {
-  const fadeIn = id === "abertura" ? 1 : smoothstep(0.1, 0.2, local);
   const end = Math.min(0.9, exit);
+  if (end < 0.15) return 1;
+  const fullAt = Math.min(0.2, Math.max(0, end - 0.15));
+  const fadeIn = id === "abertura" ? 1 : smoothstep(fullAt - 0.1, fullAt, local);
   const fadeOut = id === "fechamento" ? 1 : 1 - smoothstep(end - 0.1, end, local);
   return fadeIn * fadeOut;
+}
+
+// Cor de fundo e tom "assentados" de cada ato (no meio dele). Usado pelo script que pinta a home
+// certa antes da hidratação, quando a página recarrega no meio do filme.
+export function actPalette(): Record<ActId, { background: string; tone: Tone }> {
+  return Object.fromEntries(
+    ACTS.map((a) => {
+      const mid = (a.start + a.end) / 2;
+      return [a.id, { background: backgroundAt(mid), tone: toneAt(mid) }];
+    }),
+  ) as Record<ActId, { background: string; tone: Tone }>;
 }

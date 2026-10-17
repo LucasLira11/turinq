@@ -4,12 +4,13 @@ import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import ServiceGrid from "@/components/ui/ServiceGrid";
 import { projects } from "@/content/projects";
+import { metadataFor } from "@/content/metadata";
 import { routeFor } from "@/content/routes";
 import { services } from "@/content/services";
 
 const route = routeFor("/sites-e-sistemas")!;
 
-export const metadata: Metadata = { title: route.title, description: route.description };
+export const metadata: Metadata = metadataFor("/sites-e-sistemas");
 
 export default function SitesESistemasPage() {
   return (

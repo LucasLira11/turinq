@@ -64,6 +64,7 @@ export default function Stage() {
           onCreated={({ gl }) => {
             // Em produção não espera a GPU confirmar cada shader (chamada síncrona que trava a thread).
             gl.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
+            if (process.env.NODE_ENV === "development") (window as unknown as { __gl: typeof gl }).__gl = gl;
             gl.domElement.addEventListener("webglcontextlost", (e) => {
               e.preventDefault();
               setQuality("static");

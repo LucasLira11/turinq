@@ -41,9 +41,15 @@
     color: var(--color-night);
   }
 
+  /* Aço no claro (5,2:1 sobre papel) e gis no escuro: o anel precisa de 3:1 sobre o fundo. */
   :focus-visible {
-    outline: 2px solid var(--color-gis);
+    outline: 2px solid var(--color-steel);
     outline-offset: 3px;
+  }
+
+  html[data-tone="dark"] :focus-visible,
+  footer :focus-visible {
+    outline-color: var(--color-gis);
   }
 }
 

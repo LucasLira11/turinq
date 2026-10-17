@@ -10,7 +10,10 @@ import Hud from "@/components/ui/Hud";
 import JsonLd from "@/components/ui/JsonLd";
 import LayerPanel from "@/components/ui/LayerPanel";
 import Reveal from "@/components/ui/Reveal";
+import { metadataFor } from "@/content/metadata";
 import { contactChannels, site, siteUrl, whatsappUrl } from "@/content/site";
+
+export const metadata = metadataFor("/");
 
 const act = Object.fromEntries(ACTS.map((a) => [a.id, a])) as Record<(typeof ACTS)[number]["id"], (typeof ACTS)[number]>;
 

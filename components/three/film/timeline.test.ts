@@ -3,6 +3,7 @@ import { contrastRatio } from "@/lib/color";
 import {
   ACTS,
   actAt,
+  actPalette,
   backgroundAt,
   localProgress,
   progressAt,
@@ -82,6 +83,22 @@ test("textOpacity: janelas de 20–80% e as exceções da abertura e do fechamen
   expect(textOpacity("planeta", 0.2)).toBe(1);
   expect(textOpacity("planeta", 0.8)).toBe(1);
   expect(textOpacity("fechamento", 1)).toBe(1);
+});
+
+test("textOpacity chega a 1 mesmo em telas baixas (celular deitado, zoom 200%)", () => {
+  const peak = (exit: number) => Math.max(...Array.from({ length: 101 }, (_, i) => textOpacity("anos", i / 100, exit)));
+  expect(peak(0.3)).toBe(1);
+  expect(peak(0.2)).toBe(1);
+  expect(peak(0.15)).toBe(1);
+  expect(textOpacity("territorio", 0, 0.05)).toBe(1);
+});
+
+test("actPalette: cor assentada e tom de cada ato", () => {
+  const p = actPalette();
+  expect(p.anos).toEqual({ background: "#E9ECF2", tone: "light" });
+  expect(p.planeta).toEqual({ background: "#0B0E16", tone: "dark" });
+  expect(p.territorio.tone).toBe("dark");
+  expect(p.telas).toEqual({ background: "#F2F3F6", tone: "light" });
 });
 
 test("textOpacity some antes do ponto em que o sticky solta o texto", () => {

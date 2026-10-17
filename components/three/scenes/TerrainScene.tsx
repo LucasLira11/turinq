@@ -7,6 +7,7 @@ import { film } from "@/components/three/film/film-store";
 import Dust from "@/components/three/objects/Dust";
 import TerrainMesh from "@/components/three/objects/TerrainMesh";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
+import { DIRECTOR_PRIORITY } from "@/components/three/scenes/priority";
 
 // Página de geotecnologia: relevo com curvas de nível; uma faixa de brilho segue o mouse,
 // como um scanner passando sobre o mapa.
@@ -21,7 +22,7 @@ export default function TerrainScene({ quality }: { quality: "high" | "low" }) {
     const target = pointer.x === 0 && pointer.y === 0 ? Math.sin(clock.elapsedTime * 0.4) * 0.8 : pointer.x;
     scan.current += (target - scan.current) * 0.08;
     if (group.current) group.current.rotation.y = Math.sin(clock.elapsedTime * 0.05) * 0.25;
-  });
+  }, DIRECTOR_PRIORITY);
 
   return (
     <>

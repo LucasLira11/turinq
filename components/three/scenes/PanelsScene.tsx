@@ -8,6 +8,7 @@ import Dust from "@/components/three/objects/Dust";
 import ScreenPanels from "@/components/three/objects/ScreenPanels";
 import { HALF_FOV_TAN } from "@/components/three/placement";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
+import { DIRECTOR_PRIORITY } from "@/components/three/scenes/priority";
 
 const DISTANCE = 7.5;
 
@@ -32,7 +33,7 @@ export default function PanelsScene({ quality }: { quality: "high" | "low" }) {
       group.current.rotation.y = Math.sin(clock.elapsedTime * 0.25) * 0.08 + pointer.x * 0.12;
       group.current.rotation.x = -pointer.y * 0.06;
     }
-  });
+  }, DIRECTOR_PRIORITY);
 
   return (
     <>

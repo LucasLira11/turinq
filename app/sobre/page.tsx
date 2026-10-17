@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import CtaBand from "@/components/ui/CtaBand";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
+import { metadataFor } from "@/content/metadata";
 import { routeFor } from "@/content/routes";
 import { site } from "@/content/site";
 
 const route = routeFor("/sobre")!;
 
-export const metadata: Metadata = { title: route.title, description: route.description };
+export const metadata: Metadata = metadataFor("/sobre");
 
 const STEPS = [
   { title: "Diagnóstico", text: "Entendemos o problema, quem vai usar e o que precisa mudar antes de escrever uma linha de código." },

@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import PageTransition from "@/components/layout/PageTransition";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import ToneScript from "@/components/layout/ToneScript";
 import StageLoader from "@/components/three/StageLoader";
 import { routeFor } from "@/content/routes";
 import { siteUrl } from "@/content/site";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: { default: home.title, template: "%s · Turinq" },
   description: home.description,
-  openGraph: { type: "website", locale: "pt_BR", siteName: "Turinq" },
+  openGraph: { type: "website", locale: "pt_BR", siteName: "Turinq", title: home.title, description: home.description },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -28,9 +29,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="pt-BR"
       data-tone="light"
+      suppressHydrationWarning
       className={`${unbounded.variable} ${manrope.variable} ${jetbrains.variable}`}
     >
       <body className="font-sans text-ink tone-dark:text-white">
+        <ToneScript />
         <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
         </a>

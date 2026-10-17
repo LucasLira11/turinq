@@ -42,10 +42,24 @@ export default function SmoothScroll() {
     };
   }, [reduced]);
 
+  // Voltar/avançar no histórico restaura a posição (o Next cuida disso); só links novos vão ao topo.
+  const fromHistory = useRef(false);
+  useEffect(() => {
+    const onPop = () => {
+      fromHistory.current = true;
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
   // Só em navegação: no primeiro carregamento o navegador restaura a posição do scroll.
   useEffect(() => {
     if (previousPath.current === pathname) return;
     previousPath.current = pathname;
+    if (fromHistory.current) {
+      fromHistory.current = false;
+      return;
+    }
     if (lenis) lenis.scrollTo(0, { immediate: true });
     else window.scrollTo(0, 0);
   }, [pathname]);

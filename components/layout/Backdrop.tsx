@@ -28,7 +28,11 @@ export default function Backdrop() {
       data-backdrop
       aria-hidden
       className="fixed inset-0 -z-10"
-      style={{ backgroundColor: pathname === "/" ? TOKENS.silver100 : TOKENS.paper }}
+      // O script de tom ajusta a cor antes da hidratação na home recarregada no meio do filme.
+      suppressHydrationWarning
+      style={{
+        backgroundColor: pathname === "/" ? TOKENS.silver100 : toneForPath(pathname) === "dark" ? TOKENS.night : TOKENS.paper,
+      }}
     />
   );
 }

@@ -3,13 +3,14 @@ import CtaBand from "@/components/ui/CtaBand";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import ServiceGrid from "@/components/ui/ServiceGrid";
+import { metadataFor } from "@/content/metadata";
 import { routeFor } from "@/content/routes";
 import { services } from "@/content/services";
 import { site } from "@/content/site";
 
 const route = routeFor("/geotecnologia")!;
 
-export const metadata: Metadata = { title: route.title, description: route.description };
+export const metadata: Metadata = metadataFor("/geotecnologia");
 
 export default function GeotecnologiaPage() {
   return (
