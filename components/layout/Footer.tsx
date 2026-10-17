@@ -1,5 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
+import Monogram from "@/components/brand/Monogram";
+import Wordmark from "@/components/brand/Wordmark";
 import { ROUTES } from "@/content/routes";
 import { contactChannels, site } from "@/content/site";
 
@@ -10,8 +11,10 @@ export default function Footer() {
     <footer className="relative z-10 bg-night text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          {/* Provisório até o logo vetorizado (Task 4). */}
-          <Image src="/logo-turinq-branca.png" alt="Turinq" width={180} height={120} className="h-auto w-44" />
+          <div className="flex items-center gap-4 text-white">
+            <Monogram className="h-14 w-14" title="Turinq" />
+            <Wordmark tagline className="w-40 text-[11px] text-white/90" />
+          </div>
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-white/60">
             Sites, sistemas e geotecnologia há mais de 20 anos.
           </p>

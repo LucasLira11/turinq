@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import Monogram from "@/components/brand/Monogram";
+import Wordmark from "@/components/brand/Wordmark";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ROUTES } from "@/content/routes";
@@ -18,16 +19,13 @@ export default function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-6">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full border border-ink/10 bg-paper/70 pr-2 pl-5 text-ink backdrop-blur-xl transition-colors duration-500 tone-dark:border-white/10 tone-dark:bg-night/60 tone-dark:text-white">
-        <Link href="/" aria-label="Turinq — início" className="flex items-center">
-          {/* Provisório até o logo vetorizado (Task 4). */}
-          <Image
-            src="/logo-turinq.png"
-            alt=""
-            width={110}
-            height={32}
-            priority
-            className="h-7 w-auto tone-dark:brightness-0 tone-dark:invert"
-          />
+        <Link
+          href="/"
+          aria-label="Turinq — início"
+          className="flex items-center gap-2.5 text-brand transition-colors tone-dark:text-white"
+        >
+          <Monogram className="h-7 w-7" />
+          <Wordmark className="w-[74px]" />
         </Link>
 
         <nav aria-label="Principal" className="hidden items-center gap-7 md:flex">

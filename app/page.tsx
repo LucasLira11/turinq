@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Wordmark from "@/components/brand/Wordmark";
 import ActSection from "@/components/home/ActSection";
 import FilmScroll from "@/components/home/FilmScroll";
 import { ACTS } from "@/components/three/film/timeline";
@@ -39,8 +40,8 @@ export default function Home() {
       <JsonLd data={organization} />
       <FilmScroll>
         <ActSection act={act.abertura} tone="light">
-          <p className={`${eyebrow} text-brand`}>Tecnologia e Desenvolvimento</p>
-          <h1 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-tight text-balance sm:text-6xl">
+          <Wordmark animate tagline className="w-56 text-[13px] text-brand" />
+          <h1 className="mt-10 font-display text-4xl leading-[1.02] font-semibold tracking-tight text-balance sm:text-6xl">
             Do site institucional ao mapa do território.
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink/75">
