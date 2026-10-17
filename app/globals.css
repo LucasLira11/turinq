@@ -1,77 +1,67 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
-:root {
-  /* Usando a variável nativa gerada pelo next/font no seu layout.tsx */
-  --font-display: var(--font-syne, sans-serif);
-}
+/* Tom da página (claro/escuro) vem de <html data-tone>, escrito pelo Backdrop e pelo filme da home. */
+@custom-variant tone-dark (&:where([data-tone=dark] *));
 
-/* ─── Base Reset ─── */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+@theme {
+  --color-silver-100: #e9ecf2;
+  --color-silver-300: #c9ced9;
+  --color-paper: #f2f3f6;
+  --color-brand: #4e5472;
+  --color-brand-light: #8fa3c7;
+  --color-steel: #3f6a8a;
+  --color-night: #0b0e16;
+  --color-night-surface: #121725;
+  --color-ink: #1a1d29;
+  --color-gis: #7fd1c7;
 
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  background-color: #080B12;
-  color: #ffffff;
-  font-family: var(--font-display);
-  overflow-x: hidden;
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ─── Selection ─── */
-::selection {
-  background-color: rgba(59, 130, 246, 0.3);
-  color: #ffffff;
+@theme inline {
+  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
-/* ─── Scrollbar ─── */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #080B12;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+@layer base {
+  html {
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-gis);
+    color: var(--color-night);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gis);
+    outline-offset: 3px;
+  }
 }
 
-/* ─── Tailwind custom animations ─── */
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-@keyframes reverse-spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
+@layer components {
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 100;
+    transform: translateY(-200%);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--color-night);
+    color: #fff;
+    font-weight: 700;
+  }
 
-.animate-spin-slow {
-  animation: spin-slow 30s linear infinite;
-}
-.animate-reverse-spin-slow {
-  animation: reverse-spin-slow 25s linear infinite;
-}
-
-/* ─── Gradient text helper ─── */
-.gradient-text {
-  background: linear-gradient(135deg, #60A5FA, #A78BFA);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Focus visible ─── */
-:focus-visible {
-  outline: 2px solid rgba(59, 130, 246, 0.6);
-  outline-offset: 2px;
-  border-radius: 6px;
+  .skip-link:focus {
+    transform: none;
+  }
 }
