@@ -37,8 +37,9 @@ export function filmFrameAt(p: number, introT: number): FilmFrame {
     sphereOpacity: Math.max(1 - smoothstep(0.2, 0.28, p), foldBack),
     wireOpacity: band(p, 0.2, 0.26, 0.3, 0.36),
     globeOpacity: band(p, 0.26, 0.33, 0.48, 0.54),
-    terrainOpacity: band(p, 0.47, 0.53, 0.68, 0.74),
-    layerSpread: smoothstep(0.5, 0.6, p),
+    terrainOpacity: band(p, 0.45, 0.5, 0.68, 0.74),
+    // as camadas se separam enquanto o painel de camadas está na tela
+    layerSpread: smoothstep(0.47, 0.55, p),
     panelMorph: smoothstep(0.63, 0.73, p),
     foldBack,
   };

@@ -1,7 +1,18 @@
 import { Quaternion, Vector3 } from "three";
 import { expect, test } from "vitest";
 import { latLonToVec3 } from "@/components/three/objects/globe";
-import { cameraAt, globeTransformAt } from "./camera";
+import { cameraAt, globeTransformAt, hudAt } from "./camera";
+
+test("HUD no território fica perto do alvo", () => {
+  const h = hudAt(0.55);
+  expect(Math.abs(h.lat + 22)).toBeLessThan(1);
+  expect(Math.abs(h.lon + 43)).toBeLessThan(1);
+  expect(h.alt).toBeGreaterThan(0);
+});
+
+test("HUD antes do mergulho mostra a altitude em km sobre o globo", () => {
+  expect(hudAt(0.3).alt).toBeGreaterThan(1000);
+});
 
 test("câmera contínua", () => {
   for (let p = 0; p < 1; p += 0.001) {

@@ -27,6 +27,11 @@ export function resetFilm(): void {
   film.set(initial());
 }
 
+export function toggleLayer(id: LayerId): void {
+  const layers = film.get().layers;
+  film.set({ layers: { ...layers, [id]: !layers[id] } });
+}
+
 // O seletor deve devolver um valor primitivo ou estável; um objeto novo a cada chamada re-renderiza sem parar.
 export function useFilm<S>(selector: (s: FilmState) => S): S {
   return useSyncExternalStore(

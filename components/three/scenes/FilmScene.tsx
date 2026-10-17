@@ -3,12 +3,14 @@
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import type * as THREE from "three";
-import { cameraAt, globeTransformAt } from "@/components/three/film/camera";
+import { cameraAt, globeTransformAt, hudAt } from "@/components/three/film/camera";
 import { film } from "@/components/three/film/film-store";
 import { filmFrameAt, introAt, shouldPlayIntro, type FilmFrame } from "@/components/three/film/frame";
 import DotGlobe from "@/components/three/objects/DotGlobe";
 import Dust from "@/components/three/objects/Dust";
 import FacetSphere, { EXPLODE_DISTANCE } from "@/components/three/objects/FacetSphere";
+import GisLayers from "@/components/three/objects/GisLayers";
+import TerrainMesh from "@/components/three/objects/TerrainMesh";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
 import { smoothstep } from "@/lib/math";
 import { prefersReducedMotion } from "@/lib/use-reduced-motion";
@@ -22,6 +24,7 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
   const stage = useRef<THREE.Group>(null);
   const spin = useRef<THREE.Group>(null);
   const tilt = useRef<THREE.Group>(null);
+  const hud = useRef({ lat: NaN, lon: NaN, alt: NaN });
 
   useEffect(() => {
     if (shouldPlayIntro(film.get().progress, prefersReducedMotion())) {
@@ -48,6 +51,14 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
     const pose = cameraAt(progress);
     camera.position.set(...pose.position);
     camera.lookAt(...pose.target);
+
+    // HUD: só grava no store quando o valor mostrado muda, para não re-renderizar a cada quadro.
+    const h = hudAt(progress);
+    const shown = { lat: +h.lat.toFixed(2), lon: +h.lon.toFixed(2), alt: h.alt >= 10_000 ? Math.round(h.alt / 1000) * 1000 : Math.round(h.alt) };
+    if (shown.lat !== hud.current.lat || shown.lon !== hud.current.lon || shown.alt !== hud.current.alt) {
+      hud.current = shown;
+      film.set({ camera: shown });
+    }
 
     // Composição: no desktop a esfera fica à direita do texto, do tamanho que cabe na tela;
     // no celular fica menor e acima do texto.
@@ -96,6 +107,8 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
           <DotGlobe frame={frame} stride={QUALITY_SETTINGS[quality].landStride} />
         </group>
       </group>
+      <TerrainMesh frame={frame} segments={QUALITY_SETTINGS[quality].terrainSegments} />
+      <GisLayers frame={frame} />
     </>
   );
 }

@@ -6,7 +6,9 @@ import { ACTS } from "@/components/three/film/timeline";
 import Button from "@/components/ui/Button";
 import FacetBullet from "@/components/ui/FacetBullet";
 import FilmProgress from "@/components/ui/FilmProgress";
+import Hud from "@/components/ui/Hud";
 import JsonLd from "@/components/ui/JsonLd";
+import LayerPanel from "@/components/ui/LayerPanel";
 import Reveal from "@/components/ui/Reveal";
 import { contactChannels, site, siteUrl, whatsappUrl } from "@/content/site";
 
@@ -87,7 +89,7 @@ export default function Home() {
           </Link>
         </ActSection>
 
-        <ActSection act={act.territorio} tone="dark" align="right">
+        <ActSection act={act.territorio} tone="dark" align="right" scrim>
           <Reveal as="h2" className={h2}>
             Cada camada, uma resposta.
           </Reveal>
@@ -99,6 +101,8 @@ export default function Home() {
               </li>
             ))}
           </ul>
+          <LayerPanel />
+          <Hud />
         </ActSection>
 
         <ActSection act={act.telas} tone="light">

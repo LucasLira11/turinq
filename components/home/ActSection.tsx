@@ -6,6 +6,8 @@ type Props = {
   act: Act;
   tone: Tone;
   align?: "left" | "right" | "center";
+  // Fundo escuro translúcido atrás do texto, para cenas 3D muito detalhadas atrás dele.
+  scrim?: boolean;
   children: ReactNode;
 };
 
@@ -16,7 +18,7 @@ const ALIGN = {
 } as const;
 
 // Um ato do filme: a seção dá o tempo de scroll, o bloco sticky segura o texto na tela.
-export default function ActSection({ act, tone, align = "left", children }: Props) {
+export default function ActSection({ act, tone, align = "left", scrim = false, children }: Props) {
   const extra = act.id === "abertura" ? 100 : 0;
   const height = (act.end - act.start) * FILM_HEIGHT_SVH + extra;
 
@@ -28,7 +30,9 @@ export default function ActSection({ act, tone, align = "left", children }: Prop
         data-act-text
         className={`sticky top-[22svh] mx-auto w-full max-w-7xl px-4 sm:px-6 ${tone === "dark" ? "text-white" : "text-ink"}`}
       >
-        <div className={`max-w-xl ${ALIGN[align]}`}>{children}</div>
+        <div className={`max-w-xl ${ALIGN[align]} ${scrim ? "rounded-3xl bg-night/55 p-6 backdrop-blur-[3px] sm:p-8" : ""}`}>
+          {children}
+        </div>
       </div>
     </section>
   );

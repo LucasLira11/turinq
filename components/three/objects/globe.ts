@@ -13,6 +13,11 @@ export function fibonacciSphere(n: number): [number, number][] {
   return points;
 }
 
+export function vec3ToLatLon(x: number, y: number, z: number): { lat: number; lon: number } {
+  const r = Math.hypot(x, y, z) || 1;
+  return { lat: (Math.asin(y / r) * 180) / Math.PI, lon: (Math.atan2(x, z) * 180) / Math.PI };
+}
+
 export function latLonToVec3(lat: number, lon: number, r: number): [number, number, number] {
   const phi = (lat * Math.PI) / 180;
   const lambda = (lon * Math.PI) / 180;
