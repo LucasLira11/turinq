@@ -24,7 +24,7 @@ export default function FilmProgress() {
     <>
       <nav
         aria-label="Capítulos"
-        className="fixed top-1/2 right-5 z-30 hidden -translate-y-1/2 items-stretch gap-4 text-ink md:flex tone-dark:text-white"
+        className="fixed top-1/2 right-5 z-30 hidden -translate-y-1/2 items-stretch gap-4 text-ink xl:flex tone-dark:text-white"
       >
         <ol className="flex flex-col justify-between gap-5 py-1 text-right">
           {CHAPTERS.map((a) => (
@@ -48,7 +48,7 @@ export default function FilmProgress() {
 
       <p
         aria-hidden
-        className="fixed bottom-4 left-4 z-30 rounded-full bg-paper/70 px-3 py-1.5 font-mono text-[11px] text-ink tabular-nums backdrop-blur md:hidden tone-dark:bg-night/60 tone-dark:text-white"
+        className="fixed bottom-4 left-4 z-30 rounded-full bg-paper/70 px-3 py-1.5 font-mono text-[11px] text-ink tabular-nums backdrop-blur xl:hidden tone-dark:bg-night/60 tone-dark:text-white"
       >
         {timecode} · {ACTS.find((a) => a.id === current)?.label}
       </p>

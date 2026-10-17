@@ -29,6 +29,11 @@ export default function Stage() {
     };
   }, []);
 
+  // Sem 3D não há montagem da esfera: libera o que espera por ela (o wordmark da home).
+  useEffect(() => {
+    if (quality === "static") film.set({ introDone: true });
+  }, [quality]);
+
   if (quality === "static") return <Poster scene={scene} />;
 
   const settings = QUALITY_SETTINGS[quality];

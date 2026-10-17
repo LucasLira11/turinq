@@ -1,35 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { toneForPath } from "@/content/routes";
 import { TOKENS } from "@/lib/color";
 
-let backdrop: HTMLDivElement | null = null;
-
-// Escrita direta no DOM: o filme da home chama isto a cada quadro de scroll.
+// Escrita direta no DOM: o filme da home chama isto a cada quadro de scroll. Busca o elemento
+// pelo atributo porque o filme pode chamar antes de os efeitos do Backdrop rodarem.
 export function setBackdropColor(hex: string): void {
-  if (backdrop) backdrop.style.backgroundColor = hex;
+  const el = document.querySelector<HTMLDivElement>("[data-backdrop]");
+  if (el) el.style.backgroundColor = hex;
 }
 
 export default function Backdrop() {
-  const ref = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    backdrop = ref.current;
-    return () => {
-      backdrop = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    // A home começa prateada; dali em diante o filme assume a cor.
-    if (pathname === "/") {
-      setBackdropColor(TOKENS.silver100);
-      document.documentElement.dataset.tone = "light";
-      return;
-    }
+    // Na home quem manda é o filme (FilmScroll), inclusive ao recarregar no meio do scroll.
+    if (pathname === "/") return;
     const tone = toneForPath(pathname);
     setBackdropColor(tone === "dark" ? TOKENS.night : TOKENS.paper);
     document.documentElement.dataset.tone = tone;
@@ -37,7 +25,7 @@ export default function Backdrop() {
 
   return (
     <div
-      ref={ref}
+      data-backdrop
       aria-hidden
       className="fixed inset-0 -z-10"
       style={{ backgroundColor: pathname === "/" ? TOKENS.silver100 : TOKENS.paper }}

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Wordmark from "@/components/brand/Wordmark";
 import ActSection from "@/components/home/ActSection";
+import HeroWordmark from "@/components/home/HeroWordmark";
 import FilmScroll from "@/components/home/FilmScroll";
 import { ACTS } from "@/components/three/film/timeline";
 import Button from "@/components/ui/Button";
@@ -42,7 +42,7 @@ export default function Home() {
       <FilmProgress />
       <FilmScroll>
         <ActSection act={act.abertura} tone="light">
-          <Wordmark animate tagline className="w-56 text-[13px] text-brand" />
+          <HeroWordmark />
           <h1 className="mt-10 font-display text-4xl leading-[1.02] font-semibold tracking-tight text-balance sm:text-6xl">
             Do site institucional ao mapa do território.
           </h1>

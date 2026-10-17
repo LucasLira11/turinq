@@ -13,6 +13,8 @@ const TOTAL_WIDTH = last.x + last.width;
 
 type Props = {
   animate?: boolean;
+  // Com `animate`, o wordmark fica escondido até `play` virar true e então se desdobra.
+  play?: boolean;
   tagline?: boolean;
   onDone?: () => void;
   className?: string;
@@ -20,13 +22,14 @@ type Props = {
 
 // "turinq" com as formas exatas do logo oficial. Cada letra é um <svg> próprio para
 // poder dobrar em 3D (rotateX) como papel se desdobrando.
-export default function Wordmark({ animate = false, tagline = false, onDone, className = "" }: Props) {
+export default function Wordmark({ animate = false, play = true, tagline = false, onDone, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const waiting = animate && !play;
 
   useGSAP(
     () => {
-      if (!animate) return;
+      if (!animate || !play) return;
       if (reduced) {
         onDone?.();
         return;
@@ -42,11 +45,11 @@ export default function Wordmark({ animate = false, tagline = false, onDone, cla
       });
       if (tagline) tl.from("[data-tagline]", { opacity: 0, y: 8, duration: 0.8, ease: "expo.out" }, "-=0.4");
     },
-    { scope: ref, dependencies: [animate, reduced] },
+    { scope: ref, dependencies: [animate, play, reduced] },
   );
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={className} style={waiting ? { visibility: "hidden" } : undefined}>
       <div
         role="img"
         aria-label="turinq"
