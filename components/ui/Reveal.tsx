@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
-import { useReducedMotion } from "@/lib/use-reduced-motion";
+import { prefersReducedMotion, useReducedMotion } from "@/lib/use-reduced-motion";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
@@ -23,9 +23,10 @@ export default function Reveal({ as: Tag = "div", delay = 0, className, children
 
   useGSAP(
     () => {
-      if (reduced || !ref.current) return;
+      // Lê a preferência direto: na hidratação o hook ainda devolve o valor do servidor (false).
+      if (reduced || prefersReducedMotion() || !ref.current) return;
       const el = ref.current;
-      SplitText.create(el, {
+      const split = SplitText.create(el, {
         type: "lines",
         mask: "lines",
         autoSplit: true,
@@ -39,6 +40,7 @@ export default function Reveal({ as: Tag = "div", delay = 0, className, children
             scrollTrigger: { trigger: el, start: "top 88%", once: true },
           }),
       });
+      return () => split.revert();
     },
     { scope: ref, dependencies: [reduced, delay] },
   );

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useReducedMotion } from "@/lib/use-reduced-motion";
+import { prefersReducedMotion, useReducedMotion } from "@/lib/use-reduced-motion";
 import { WORDMARK } from "./wordmark-data";
 
 gsap.registerPlugin(useGSAP);
@@ -30,7 +30,7 @@ export default function Wordmark({ animate = false, play = true, tagline = false
   useGSAP(
     () => {
       if (!animate || !play) return;
-      if (reduced) {
+      if (reduced || prefersReducedMotion()) {
         onDone?.();
         return;
       }
