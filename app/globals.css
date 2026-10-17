@@ -64,4 +64,9 @@
   .skip-link:focus {
     transform: none;
   }
+
+  /* O filme esconde o texto fora da janela do ato; com foco do teclado ele sempre aparece. */
+  [data-act-text]:focus-within {
+    opacity: 1 !important;
+  }
 }

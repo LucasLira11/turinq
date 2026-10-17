@@ -5,6 +5,7 @@ import FilmScroll from "@/components/home/FilmScroll";
 import { ACTS } from "@/components/three/film/timeline";
 import Button from "@/components/ui/Button";
 import FacetBullet from "@/components/ui/FacetBullet";
+import FilmProgress from "@/components/ui/FilmProgress";
 import JsonLd from "@/components/ui/JsonLd";
 import Reveal from "@/components/ui/Reveal";
 import { contactChannels, site, siteUrl, whatsappUrl } from "@/content/site";
@@ -38,6 +39,7 @@ export default function Home() {
   return (
     <>
       <JsonLd data={organization} />
+      <FilmProgress />
       <FilmScroll>
         <ActSection act={act.abertura} tone="light">
           <Wordmark animate tagline className="w-56 text-[13px] text-brand" />

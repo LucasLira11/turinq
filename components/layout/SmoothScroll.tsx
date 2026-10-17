@@ -20,6 +20,9 @@ export default function SmoothScroll() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    if (process.env.NODE_ENV === "development") {
+      (window as unknown as { __ScrollTrigger: typeof ScrollTrigger }).__ScrollTrigger = ScrollTrigger;
+    }
     // A barra de endereço do celular muda a altura da janela; não recalcular o filme por isso.
     ScrollTrigger.config({ ignoreMobileResize: true });
     if (reduced) return;

@@ -21,13 +21,9 @@ export default function ActSection({ act, tone, align = "left", children }: Prop
   const height = (act.end - act.start) * FILM_HEIGHT_SVH + extra;
 
   return (
-    <section
-      id={act.id}
-      data-act={act.id}
-      aria-label={act.label}
-      className="relative scroll-mt-0"
-      style={{ height: `${height}svh` }}
-    >
+    <section data-act={act.id} aria-label={act.label} className="relative" style={{ height: `${height}svh` }}>
+      {/* Âncora a 30% da seção: um link para o ato cai onde o texto dele já está visível. */}
+      <span id={act.id} aria-hidden className="absolute top-[30%]" />
       <div
         data-act-text
         className={`sticky top-[28svh] mx-auto w-full max-w-7xl px-4 sm:px-6 ${tone === "dark" ? "text-white" : "text-ink"}`}

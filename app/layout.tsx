@@ -4,6 +4,7 @@ import Backdrop from "@/components/layout/Backdrop";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import StageLoader from "@/components/three/StageLoader";
 import { routeFor } from "@/content/routes";
 import { siteUrl } from "@/content/site";
 import "./globals.css";
@@ -33,9 +34,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Pular para o conteúdo
         </a>
         <Backdrop />
+        <StageLoader />
         <SmoothScroll />
         <Header />
-        <main id="conteudo">{children}</main>
+        <main id="conteudo" className="relative z-10">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
