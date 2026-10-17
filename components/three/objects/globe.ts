@@ -13,6 +13,13 @@ export function fibonacciSphere(n: number): [number, number][] {
   return points;
 }
 
+// Coordenada aleatória uniforme na esfera (a latitude vem do arco-seno para não concentrar nos polos).
+export function randomLatLon(rng: () => number): [number, number] {
+  const lat = (Math.asin(rng() * 2 - 1) * 180) / Math.PI;
+  const lon = rng() * 360 - 180;
+  return [lat, lon];
+}
+
 export function vec3ToLatLon(x: number, y: number, z: number): { lat: number; lon: number } {
   const r = Math.hypot(x, y, z) || 1;
   return { lat: (Math.asin(y / r) * 180) / Math.PI, lon: (Math.atan2(x, z) * 180) / Math.PI };

@@ -1,5 +1,15 @@
 import { expect, test } from "vitest";
-import { fibonacciSphere, latLonToVec3 } from "./globe";
+import { mulberry32 } from "@/lib/math";
+import { fibonacciSphere, latLonToVec3, randomLatLon } from "./globe";
+
+test("randomLatLon dentro do globo", () => {
+  const rng = mulberry32(1);
+  for (let i = 0; i < 100; i++) {
+    const [la, lo] = randomLatLon(rng);
+    expect(Math.abs(la)).toBeLessThanOrEqual(90);
+    expect(Math.abs(lo)).toBeLessThanOrEqual(180);
+  }
+});
 
 test("fibonacciSphere distribui no intervalo", () => {
   const pts = fibonacciSphere(1000);

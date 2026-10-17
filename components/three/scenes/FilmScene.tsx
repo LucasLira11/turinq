@@ -12,12 +12,11 @@ import FacetSphere, { EXPLODE_DISTANCE } from "@/components/three/objects/FacetS
 import GisLayers from "@/components/three/objects/GisLayers";
 import ScreenPanels from "@/components/three/objects/ScreenPanels";
 import TerrainMesh from "@/components/three/objects/TerrainMesh";
+import { HALF_FOV_TAN, heroPlacement } from "@/components/three/placement";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
 import { smoothstep } from "@/lib/math";
 import { prefersReducedMotion } from "@/lib/use-reduced-motion";
 
-const BASE_DISTANCE = 4.2;
-const HALF_FOV_TAN = Math.tan((20 * Math.PI) / 180);
 
 export default function FilmScene({ quality }: { quality: "high" | "low" }) {
   const frame = useRef<FilmFrame>(filmFrameAt(film.get().progress, 1));
@@ -65,13 +64,13 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
     // Composição: no desktop a esfera fica à direita do texto, do tamanho que cabe na tela;
     // no celular fica menor e acima do texto.
     const aspect = size.width / size.height;
-    const mobile = aspect < 0.8;
-    const halfWidth = HALF_FOV_TAN * BASE_DISTANCE * aspect;
+    const place = heroPlacement(aspect);
+    const mobile = place.mobile;
     // A esfera fica ao lado do texto na abertura e volta para lá no fechamento.
     const side = Math.max(1 - smoothstep(0.4, 0.47, progress), f.foldBack);
-    const offsetX = mobile ? 0 : Math.min(1.4, halfWidth * 0.5) * side;
-    const offsetY = mobile ? 0.95 * side : 0;
-    const fit = mobile ? 0.4 : Math.min(0.95, Math.max(0.5, halfWidth * 0.34));
+    const offsetX = place.x * side;
+    const offsetY = place.y * side;
+    const fit = place.scale;
     // Na vista explodida as facetas se afastam, mas o conjunto cresce pouco: não invade o texto.
     const spread = 1 + f.explode * EXPLODE_DISTANCE;
     const scale = (1 - (1 - fit) * side) * ((1 + 0.35 * f.explode * EXPLODE_DISTANCE) / spread);

@@ -1,4 +1,5 @@
 import Button from "@/components/ui/Button";
+import LostCoordinate from "@/components/ui/LostCoordinate";
 
 export default function NotFound() {
   return (
@@ -9,6 +10,7 @@ export default function NotFound() {
           Coordenada não encontrada.
         </h1>
         <p className="mt-6 text-lg text-white/80">Essa página não está no nosso mapa.</p>
+        <LostCoordinate />
         <Button href="/" tone="dark" className="mt-10">
           Voltar ao início
         </Button>

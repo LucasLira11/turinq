@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/layout/TransitionLink";
 import ActSection from "@/components/home/ActSection";
 import HeroWordmark from "@/components/home/HeroWordmark";
 import FilmScroll from "@/components/home/FilmScroll";

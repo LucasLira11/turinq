@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/layout/TransitionLink";
 import Monogram from "@/components/brand/Monogram";
 import Wordmark from "@/components/brand/Wordmark";
 import { usePathname } from "next/navigation";

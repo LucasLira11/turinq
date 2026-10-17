@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/layout/TransitionLink";
 import type { ReactNode } from "react";
 import type { Tone } from "@/content/routes";
 

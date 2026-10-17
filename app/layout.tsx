@@ -3,6 +3,7 @@ import { JetBrains_Mono, Manrope, Unbounded } from "next/font/google";
 import Backdrop from "@/components/layout/Backdrop";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import PageTransition from "@/components/layout/PageTransition";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import StageLoader from "@/components/three/StageLoader";
 import { routeFor } from "@/content/routes";
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {children}
         </main>
         <Footer />
+        <PageTransition />
       </body>
     </html>
   );
