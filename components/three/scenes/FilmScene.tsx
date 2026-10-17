@@ -6,6 +6,7 @@ import type * as THREE from "three";
 import { cameraAt, globeTransformAt } from "@/components/three/film/camera";
 import { film } from "@/components/three/film/film-store";
 import { filmFrameAt, introAt, shouldPlayIntro, type FilmFrame } from "@/components/three/film/frame";
+import DotGlobe from "@/components/three/objects/DotGlobe";
 import Dust from "@/components/three/objects/Dust";
 import FacetSphere, { EXPLODE_DISTANCE } from "@/components/three/objects/FacetSphere";
 import { QUALITY_SETTINGS } from "@/components/three/quality";
@@ -20,6 +21,7 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
   const intro = useRef({ start: 0, t: 1, done: true });
   const stage = useRef<THREE.Group>(null);
   const spin = useRef<THREE.Group>(null);
+  const tilt = useRef<THREE.Group>(null);
 
   useEffect(() => {
     if (shouldPlayIntro(film.get().progress, prefersReducedMotion())) {
@@ -71,6 +73,13 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
       spin.current.rotation.x += (pointer.y * 0.25 - spin.current.rotation.x) * 0.05;
       spin.current.rotation.z += (-pointer.x * 0.15 - spin.current.rotation.z) * 0.05;
     }
+    // O globo só inclina com o mouse antes do mergulho: no território o ponto (-22, -43) precisa
+    // estar exatamente no topo, como o globeTransformAt calcula.
+    if (tilt.current) {
+      const k = 1 - smoothstep(0.38, 0.44, progress);
+      tilt.current.rotation.x += (pointer.y * 0.15 * k - tilt.current.rotation.x) * 0.05;
+      tilt.current.rotation.z += (-pointer.x * 0.1 * k - tilt.current.rotation.z) * 0.05;
+    }
   });
 
   return (
@@ -82,6 +91,9 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
       <group ref={stage}>
         <group ref={spin}>
           <FacetSphere frame={frame} />
+        </group>
+        <group ref={tilt}>
+          <DotGlobe frame={frame} stride={QUALITY_SETTINGS[quality].landStride} />
         </group>
       </group>
     </>

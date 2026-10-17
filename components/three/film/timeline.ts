@@ -17,7 +17,7 @@ export const ACTS: readonly Act[] = [
 ];
 
 // Altura total de scroll do filme, em svh; cada ato recebe a sua fração.
-export const FILM_HEIGHT_SVH = 700;
+export const FILM_HEIGHT_SVH = 1000;
 
 const ACT_BY_ID = Object.fromEntries(ACTS.map((a) => [a.id, a])) as Record<ActId, Act>;
 

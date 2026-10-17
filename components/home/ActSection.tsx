@@ -26,7 +26,7 @@ export default function ActSection({ act, tone, align = "left", children }: Prop
       <span id={act.id} aria-hidden className="absolute top-[30%]" />
       <div
         data-act-text
-        className={`sticky top-[28svh] mx-auto w-full max-w-7xl px-4 sm:px-6 ${tone === "dark" ? "text-white" : "text-ink"}`}
+        className={`sticky top-[22svh] mx-auto w-full max-w-7xl px-4 sm:px-6 ${tone === "dark" ? "text-white" : "text-ink"}`}
       >
         <div className={`max-w-xl ${ALIGN[align]}`}>{children}</div>
       </div>

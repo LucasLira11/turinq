@@ -1,5 +1,18 @@
 // Geometria do globo. Sem imports: scripts/build-land-points.mjs importa este arquivo direto pelo Node.
 
+// Pontos quase uniformes na esfera (espiral de Fibonacci), como pares [lat, lon] em graus.
+export function fibonacciSphere(n: number): [number, number][] {
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  const points: [number, number][] = [];
+  for (let i = 0; i < n; i++) {
+    const y = 1 - ((i + 0.5) / n) * 2;
+    const lat = (Math.asin(y) * 180) / Math.PI;
+    const raw = (((i * golden * 180) / Math.PI) % 360) - 180;
+    points.push([lat, raw]);
+  }
+  return points;
+}
+
 export function latLonToVec3(lat: number, lon: number, r: number): [number, number, number] {
   const phi = (lat * Math.PI) / 180;
   const lambda = (lon * Math.PI) / 180;
