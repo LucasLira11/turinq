@@ -62,6 +62,8 @@ export default function Stage() {
           gl={{ alpha: true, antialias: quality === "high", powerPreference: "high-performance" }}
           camera={{ position: [0, 0, 4.2], fov: 40, near: 0.01, far: 200 }}
           onCreated={({ gl }) => {
+            // Em produção não espera a GPU confirmar cada shader (chamada síncrona que trava a thread).
+            gl.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
             gl.domElement.addEventListener("webglcontextlost", (e) => {
               e.preventDefault();
               setQuality("static");

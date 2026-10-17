@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import type * as THREE from "three";
 import { cameraAt, globeTransformAt, hudAt } from "@/components/three/film/camera";
-import { film } from "@/components/three/film/film-store";
+import { film, useFilm } from "@/components/three/film/film-store";
 import { filmFrameAt, introAt, shouldPlayIntro, type FilmFrame } from "@/components/three/film/frame";
 import DotGlobe from "@/components/three/objects/DotGlobe";
 import Dust from "@/components/three/objects/Dust";
@@ -26,6 +26,10 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
   const tilt = useRef<THREE.Group>(null);
   const panels = useRef<THREE.Group>(null);
   const hud = useRef({ lat: NaN, lon: NaN, alt: NaN });
+  // Montagem preguiçosa: cada parte pesada entra um pouco antes do seu ato e não sai mais.
+  const withGlobe = useFilm((s) => s.maxProgress > 0.1);
+  const withTerrain = useFilm((s) => s.maxProgress > 0.25);
+  const withPanels = useFilm((s) => s.maxProgress > 0.4);
 
   useEffect(() => {
     if (shouldPlayIntro(film.get().progress, prefersReducedMotion())) {
@@ -114,15 +118,15 @@ export default function FilmScene({ quality }: { quality: "high" | "low" }) {
         <group ref={spin}>
           <FacetSphere frame={frame} />
         </group>
-        <group ref={tilt}>
-          <DotGlobe frame={frame} stride={QUALITY_SETTINGS[quality].landStride} />
-        </group>
+        <group ref={tilt}>{withGlobe && <DotGlobe frame={frame} stride={QUALITY_SETTINGS[quality].landStride} />}</group>
       </group>
-      <TerrainMesh frame={frame} segments={QUALITY_SETTINGS[quality].terrainSegments} />
-      <GisLayers frame={frame} />
-      <group ref={panels}>
-        <ScreenPanels frame={frame} />
-      </group>
+      {withTerrain && (
+        <>
+          <TerrainMesh frame={frame} segments={QUALITY_SETTINGS[quality].terrainSegments} />
+          <GisLayers frame={frame} />
+        </>
+      )}
+      <group ref={panels}>{withPanels && <ScreenPanels frame={frame} />}</group>
     </>
   );
 }

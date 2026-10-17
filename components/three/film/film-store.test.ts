@@ -1,5 +1,15 @@
 import { expect, test } from "vitest";
-import { film, resetFilm, toggleLayer } from "./film-store";
+import { film, resetFilm, setProgress, toggleLayer } from "./film-store";
+
+test("setProgress guarda o máximo alcançado (para montar cenas uma vez só)", () => {
+  resetFilm();
+  setProgress(0.5);
+  setProgress(0.2);
+  expect(film.get().progress).toBe(0.2);
+  expect(film.get().maxProgress).toBe(0.5);
+  resetFilm();
+  expect(film.get().maxProgress).toBe(0);
+});
 
 test("toggleLayer alterna só a camada pedida", () => {
   resetFilm();

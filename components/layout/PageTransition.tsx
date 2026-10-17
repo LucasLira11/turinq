@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { gsap } from "gsap";
 import { TOKENS } from "@/lib/color";
 import { facetGrid } from "./facet-grid";
 
@@ -12,45 +11,45 @@ let overlay: SVGSVGElement | null = null;
 let covered = false;
 let safety: ReturnType<typeof setTimeout> | undefined;
 
+// Anima todos os triângulos (Web Animations, sem biblioteca) e resolve quando o último termina.
+function animateAll(from: Keyframe, to: Keyframe, duration: number, stagger: number, easing: string) {
+  const polys = overlay ? Array.from(overlay.querySelectorAll("polygon")) : [];
+  const animations = polys.map((p, i) =>
+    p.animate([from, to], { duration, delay: TRIS[i].delay * stagger, easing, fill: "forwards" }),
+  );
+  return Promise.all(animations.map((a) => a.finished)).then(() => undefined);
+}
+
 // Cobre a tela com as facetas antes de trocar de página. Resolve na hora se o overlay não existir.
 export function cover(): Promise<void> {
-  const el = overlay;
-  if (!el) return Promise.resolve();
-  return new Promise((resolve) => {
-    el.style.visibility = "visible";
-    covered = true;
-    gsap.fromTo(
-      el.querySelectorAll("polygon"),
-      { opacity: 0, scale: 0.3 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-        stagger: (i: number) => TRIS[i].delay * 0.15,
-        onComplete: () => resolve(),
-      },
-    );
-    // Se a navegação não acontecer (erro, mesma rota), a tela não fica coberta para sempre.
-    clearTimeout(safety);
-    safety = setTimeout(uncover, 4000);
-  });
+  if (!overlay) return Promise.resolve();
+  overlay.style.visibility = "visible";
+  covered = true;
+  // Se a navegação não acontecer (erro, mesma rota), a tela não fica coberta para sempre.
+  clearTimeout(safety);
+  safety = setTimeout(uncover, 4000);
+  return animateAll(
+    { opacity: 0, transform: "scale(0.3)" },
+    { opacity: 1, transform: "scale(1)" },
+    300,
+    150,
+    "cubic-bezier(0.33, 1, 0.68, 1)",
+  );
 }
 
 function uncover() {
-  const el = overlay;
   clearTimeout(safety);
-  if (!el || !covered) return;
+  if (!overlay || !covered) return;
   covered = false;
-  gsap.to(el.querySelectorAll("polygon"), {
-    opacity: 0,
-    scale: 0.3,
-    duration: 0.35,
-    ease: "power2.in",
-    stagger: (i: number) => TRIS[i].delay * 0.2,
-    onComplete: () => {
-      el.style.visibility = "hidden";
-    },
+  const el = overlay;
+  animateAll(
+    { opacity: 1, transform: "scale(1)" },
+    { opacity: 0, transform: "scale(0.3)" },
+    350,
+    200,
+    "cubic-bezier(0.32, 0, 0.67, 0)",
+  ).then(() => {
+    if (!covered) el.style.visibility = "hidden";
   });
 }
 

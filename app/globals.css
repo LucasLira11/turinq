@@ -68,4 +68,49 @@
   /* O filme esconde o texto fora da janela do ato; com foco do teclado ele sempre aparece. */
   [data-act-text]:focus-within {
     opacity: 1 !important;
+  }
+
+  /* Wordmark se desdobrando como papel (letra a letra, atraso inline). */
+  .origami-letter {
+    transform-origin: 50% 0%;
+    animation: origami-unfold 0.9s var(--ease-expo-out) both;
+  }
+
+  .origami-tagline {
+    animation: fade-up 0.8s var(--ease-expo-out) 0.5s both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .origami-letter,
+    .origami-tagline {
+      animation: none;
+    }
+  }
+
+  /* ?motion=reduce (verificação sem mexer no sistema) */
+  html[data-motion="reduce"] .origami-letter,
+  html[data-motion="reduce"] .origami-tagline {
+    animation: none;
+  }
+}
+
+@keyframes origami-unfold {
+  from {
+    transform: rotateX(-90deg);
+    filter: brightness(0.45);
+  }
+  to {
+    transform: rotateX(0deg);
+    filter: brightness(1);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }}

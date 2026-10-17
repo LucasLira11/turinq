@@ -2,10 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "@/lib/use-reduced-motion";
+import type Lenis from "lenis";
+import { onIdle } from "@/lib/idle";
+import { prefersReducedMotion, useReducedMotion } from "@/lib/use-reduced-motion";
 
 let lenis: Lenis | null = null;
 
@@ -13,30 +12,32 @@ export function getLenis(): Lenis | null {
   return lenis;
 }
 
+// Scroll suave (Lenis), carregado só quando o navegador fica ocioso. Lenis rola a própria
+// janela, então os listeners nativos de scroll (o filme, o Reveal) continuam funcionando.
 export default function SmoothScroll() {
   const reduced = useReducedMotion();
   const pathname = usePathname();
   const previousPath = useRef(pathname);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    if (process.env.NODE_ENV === "development") {
-      (window as unknown as { __ScrollTrigger: typeof ScrollTrigger }).__ScrollTrigger = ScrollTrigger;
+    if (reduced || prefersReducedMotion()) {
+      document.documentElement.dataset.motion = "reduce";
+      return;
     }
-    // A barra de endereço do celular muda a altura da janela; não recalcular o filme por isso.
-    ScrollTrigger.config({ ignoreMobileResize: true });
-    if (reduced) return;
-
-    const instance = new Lenis({ autoRaf: false });
-    lenis = instance;
-    instance.on("scroll", ScrollTrigger.update);
-    const tick = (time: number) => instance.raf(time * 1000);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
-
+    delete document.documentElement.dataset.motion;
+    let cancelled = false;
+    let instance: Lenis | null = null;
+    const cancelIdle = onIdle(() => {
+      import("lenis").then(({ default: LenisClass }) => {
+        if (cancelled) return;
+        instance = new LenisClass({ autoRaf: true });
+        lenis = instance;
+      });
+    }, 2500);
     return () => {
-      gsap.ticker.remove(tick);
-      instance.destroy();
+      cancelled = true;
+      cancelIdle();
+      instance?.destroy();
       lenis = null;
     };
   }, [reduced]);
@@ -47,7 +48,6 @@ export default function SmoothScroll() {
     previousPath.current = pathname;
     if (lenis) lenis.scrollTo(0, { immediate: true });
     else window.scrollTo(0, 0);
-    ScrollTrigger.refresh();
   }, [pathname]);
 
   return null;

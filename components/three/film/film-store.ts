@@ -7,6 +7,8 @@ export type LayerId = "relevo" | "hidrografia" | "lotes" | "pontos";
 
 export type FilmState = {
   progress: number;
+  // Maior progresso já alcançado nesta visita: as cenas pesadas montam uma vez e ficam.
+  maxProgress: number;
   introDone: boolean;
   pointer: { x: number; y: number };
   layers: Record<LayerId, boolean>;
@@ -15,6 +17,7 @@ export type FilmState = {
 
 const initial = (): FilmState => ({
   progress: 0,
+  maxProgress: 0,
   introDone: false,
   pointer: { x: 0, y: 0 },
   layers: { relevo: true, hidrografia: true, lotes: true, pontos: true },
@@ -25,6 +28,10 @@ export const film = createStore<FilmState>(initial());
 
 export function resetFilm(): void {
   film.set(initial());
+}
+
+export function setProgress(progress: number): void {
+  film.set({ progress, maxProgress: Math.max(film.get().maxProgress, progress) });
 }
 
 export function toggleLayer(id: LayerId): void {

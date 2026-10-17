@@ -22,7 +22,7 @@ export default function FacetSphere({ frame, seed = 3 }: Props) {
   const facets = useMemo(() => buildFacets(1, GAP), []);
   const scatter = useMemo(() => facets.map((_, i) => scatterOffset(i, seed)), [facets, seed]);
   const repel = useRef(new Float32Array(facets.length));
-  const solid = useRef<THREE.MeshStandardMaterial>(null);
+  const solid = useRef<THREE.MeshLambertMaterial>(null);
   const wire = useRef<THREE.LineBasicMaterial>(null);
   const group = useRef<THREE.Group>(null);
 
@@ -92,7 +92,7 @@ export default function FacetSphere({ frame, seed = 3 }: Props) {
   return (
     <group ref={group}>
       <mesh geometry={mesh} frustumCulled={false}>
-        <meshStandardMaterial ref={solid} vertexColors flatShading roughness={0.65} metalness={0.05} transparent side={THREE.DoubleSide} />
+        <meshLambertMaterial ref={solid} vertexColors flatShading transparent side={THREE.DoubleSide} />
       </mesh>
       <lineSegments geometry={lines} frustumCulled={false}>
         <lineBasicMaterial ref={wire} color={TOKENS.brandLight} transparent opacity={0} />
